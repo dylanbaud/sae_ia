@@ -1,5 +1,4 @@
 package flou;
-
 import outil.OutilCouleur;
 
 import java.io.File;
@@ -49,14 +48,14 @@ public class Gausien{
     }
 
     private static double genererCoef(double x, double y, double ecartType){
-        double res=Math.pow( 
-            (1/(2*Math.PI*Math.pow(ecartType, 2))),
-            Math.exp(  
-                -( 
-                    (Math.pow(x,2)+ Math.pow(y, 2))/
-                    (2*Math.pow(ecartType,2))
+        double res=Math.pow(
+                (1/(2*Math.PI*Math.pow(ecartType, 2))),
+                Math.exp(
+                        -(
+                                (Math.pow(x,2)+ Math.pow(y, 2))/
+                                        (2*Math.pow(ecartType,2))
+                        )
                 )
-            )
         );
 
         return res;
