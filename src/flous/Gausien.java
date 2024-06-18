@@ -1,4 +1,12 @@
+<<<<<<< HEAD:src/flou/Gausien.java
 package flou;
+=======
+package flous;
+
+import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+>>>>>>> b267fc5a492393189342c607c41742f4634f61e8:src/flous/Gausien.java
 
 import javax.imageio.ImageIO;
 import java.awt.*;
