@@ -1,5 +1,7 @@
 package flou;
 
+import outil.OutilCouleur;
+
 import java.io.File;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -7,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Gausien{
-    public void flouter(String fileName, String fileOutputName, double ecartType){
+    public static void flouter(String fileName, String fileOutputName, double ecartType){
         File file=new File(fileName);
 
         BufferedImage bufferedImage=null;
@@ -24,9 +26,7 @@ public class Gausien{
 
         BufferedImage bufferedOutput= new BufferedImage(lengthX, lengthY, BufferedImage.TYPE_3BYTE_BGR);
 
-
         int[] pixelCentral={lengthX/2, lengthY/2};
-
 
         for(int y=0; y<lengthY; y++){
             for(int x=0; x<lengthX; x++){
@@ -35,7 +35,9 @@ public class Gausien{
 
                 double coef=genererCoef(distX, distY, ecartType);
 
-                int newRGB=(int)(bufferedImage.getRGB(x, y)*coef);
+                int newRGB=(int)(bufferedImage.getRGB(x,y)*coef);
+
+                bufferedOutput.setRGB(x,y,newRGB);
             }
         }
 
@@ -46,7 +48,7 @@ public class Gausien{
         }
     }
 
-    public double genererCoef(double x, double y, double ecartType){
+    private static double genererCoef(double x, double y, double ecartType){
         double res=Math.pow( 
             (1/(2*Math.PI*Math.pow(ecartType, 2))),
             Math.exp(  
