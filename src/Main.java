@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import flou.FlouMoyenne;
-import flou.Gausien;
-=======
+import flous.Gausien;
 import flous.FlouMoyenne;
->>>>>>> b267fc5a492393189342c607c41742f4634f61e8
 
 public class Main {
 
