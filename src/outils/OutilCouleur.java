@@ -1,4 +1,4 @@
-package outil;
+package outils;
 
 public class OutilCouleur {
 

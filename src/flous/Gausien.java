@@ -1,5 +1,4 @@
-package flou;
-import outil.OutilCouleur;
+package flous;
 
 import java.io.File;
 import java.awt.image.BufferedImage;
