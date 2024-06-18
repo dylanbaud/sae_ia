@@ -1,5 +1,6 @@
+package flou;
+
 import java.io.File;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
