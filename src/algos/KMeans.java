@@ -14,7 +14,7 @@ public class KMeans implements Algorithme {
     /**
      * L'algorithme KMeans est un algorithme de clustering qui permet
      * de regrouper des données en K clusters à partir d'une palette
-     * de couleurs.
+     * de couleurs. Pour
      *
      * @param nbClusters le nombre de clusters à former
      * @param cheminImage le chemin de l'image à traiter

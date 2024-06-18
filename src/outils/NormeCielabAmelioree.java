@@ -1,3 +1,5 @@
+package outils;
+
 import java.awt.*;
 
 public class NormeCielabAmelioree implements NormeCouleurs {
