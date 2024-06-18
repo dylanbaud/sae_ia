@@ -1,4 +1,4 @@
-import flou.FlouMoyenne;
+import flous.FlouMoyenne;
 
 public class Main {
 

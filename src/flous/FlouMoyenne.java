@@ -1,4 +1,4 @@
-package flou;
+package flous;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
