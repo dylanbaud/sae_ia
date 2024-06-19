@@ -18,7 +18,10 @@ public class Main {
          */
 
         DBScan dbScan=new DBScan(new NormeRedmean(), 2, 15);
-        int[][] data=OutilCouleur.convertTab("img/antoine.png");
-        System.out.println(Arrays.toString(dbScan.run(data)));
+        int[][] data=OutilCouleur.convertTab("img/antoing");
+        int[] result=dbScan.run(data);
+
+        System.out.println(Arrays.toString(result));
+
     }
 }
