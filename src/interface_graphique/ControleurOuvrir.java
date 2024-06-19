@@ -22,6 +22,7 @@ public class ControleurOuvrir implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
         MenuItem miOuvrir = (MenuItem)actionEvent.getSource();
 
+        // Remplace l'image courante par une autre, sans la traiter
         if (miOuvrir.getText().equals("Ouvrir")) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Sélectionnez une image d'exoplanète");
@@ -29,19 +30,15 @@ public class ControleurOuvrir implements EventHandler<ActionEvent> {
 
             File fichier = fileChooser.showOpenDialog(m.getStage());
             if (fichier != null) {
-                // Affiche l'image visuellement
-                InputStream stream = null;
-                try {
-                    String chemin = fichier.getAbsolutePath();
-                    stream = new FileInputStream(chemin);
-                    m.setFichierCourant(chemin);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                Image image = new Image(stream);
-                m.getImageView().setImage(image);
+                // Affiche l'image visuellement, et change l'image courante
+                String chemin = fichier.getAbsolutePath();
+                m.setFichierCourant(chemin);
+
+                // Le premier true indique que l'on préserve le ratio de l'image
+                Image image = new Image("file:"+chemin, Constantes.TAILLE_MAX, Constantes.TAILLE_MAX, true, false);
+                m.setImage(image, m.getImageOriginale());
             }
         }
-        m.getStage().sizeToScene();
+        m.getStage().sizeToScene(); // Adapter la fenêtre aux éléments présents
     }
 }
