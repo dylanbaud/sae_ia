@@ -1,3 +1,5 @@
+package norme;
+
 import java.awt.*;
 
 public class NormeBase implements NormeCouleurs {
