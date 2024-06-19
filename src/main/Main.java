@@ -1,3 +1,5 @@
+package main;
+
 import algos.DBScan;
 import algos.HAC;
 import flous.Gausien;

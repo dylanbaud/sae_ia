@@ -1,0 +1,35 @@
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    /*-fx-text-fill: #f3f3f3;
+    -fx-background-color: #9b9b9b;*/
+}
+
+.button {
+    -fx-padding: 5;
+    -fx-spacing: 20;
+    -fx-text-alignment: center;
+}
+/*
+.vbox {
+    -fx-background-color: #626262;
+}
+
+.button {
+    -fx-background-color: lightgray;
+    -fx-padding: 5;
+    -fx-spacing: 20;
+}
+
+.button:hover {
+    -fx-background-color: lightblue;
+}
+
+.button:pressed {
+    -fx-background-color: lightgreen;
+}
+
+.label {
+    -fx-text-fill: #f3f3f3;
+    -fx-text-alignment: center;
+}*/
