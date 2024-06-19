@@ -18,7 +18,7 @@ public class DBScan {
      */
     private int minPts;
 
-    DBScan(NormeCouleurs n, double e, int m){
+    public DBScan(NormeCouleurs n, double e, int m){
         norme=n;
         eps=e;
         minPts=m;
