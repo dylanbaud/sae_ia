@@ -4,14 +4,17 @@ import norme.NormeCouleurs;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HAC {
 
     private NormeCouleurs normeCouleurs;
+    private List<List<int[]>> history;
 
     public HAC(NormeCouleurs normeCouleurs) {
         this.normeCouleurs = normeCouleurs;
+        this.history = new ArrayList<>();
     }
 
     public int[] run(int[][] data) {
@@ -21,6 +24,9 @@ public class HAC {
         for (int i = 0; i < n; i++) {
             clusters.add(new int[]{i});
         }
+
+        // Historique des clusters
+        history.add(new ArrayList<>(clusters));
 
         // Matrice des distances
         double[][] distances = initialDistance(data);
@@ -36,6 +42,9 @@ public class HAC {
             // Mise à jour de la liste des clusters
             clusters.remove(pair[1]);
             clusters.set(pair[0], newCluster);
+
+            // Sauvegarde de l'historique
+            history.add(new ArrayList<>(clusters));
 
             // Mise à jour de la matrice des distances
             updateDistance(distances, clusters, pair[0], pair[1]);
@@ -98,5 +107,14 @@ public class HAC {
 
     private Color createColor(int[] data) {
         return new Color(data[0], data[1], data[2]);
+    }
+
+    public List<int[]> decoupe(int k) {
+        for (int i = history.size() - 1; i >= 0; i--) {
+            if (history.get(i).size() == k) {
+                return history.get(i);
+            }
+        }
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package flous;
+package filtres;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
