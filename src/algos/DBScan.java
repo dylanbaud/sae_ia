@@ -26,9 +26,10 @@ public class DBScan {
     public int[] run(int[][] tabCouleurs){
         int cluster=0;
         int[] result=new int[tabCouleurs.length];
+
         for(int i=0; i< tabCouleurs.length; i++) {
             if(result[i]==0) {
-                ArrayList<Integer> region = regionQuery(tabCouleurs, i);
+                ArrayList<Integer> region = regionQuery(tabCouleurs, i, result);
                 if (region.size() >= minPts) {
                     cluster += 1;
                     expandCluster(tabCouleurs, i, region, cluster, result);
@@ -40,15 +41,14 @@ public class DBScan {
         return result;
     }
 
-    private ArrayList<Integer> regionQuery(int[][] tabCouleurs, int indice){
+    private ArrayList<Integer> regionQuery(int[][] tabCouleurs, int indice , int[] result){
         ArrayList<Integer> region=new ArrayList<>();
-
 
         int[] point1=tabCouleurs[indice];
         Color c1=new Color(point1[0], point1[1], point1[2]);
 
         for(int i=0; i<tabCouleurs.length; i++){
-            if(i!=indice) {
+            if(i!=indice && result[i]==0) {
                 int[] point2 = tabCouleurs[i];
                 Color c2=new Color(point2[0], point2[1], point2[2]);
                 double distance=norme.distance(c1, c2);
@@ -66,21 +66,25 @@ public class DBScan {
     void expandCluster(int[][] tabCouleurs, int indice, ArrayList<Integer> region, int cluster, int[] result){
         result[indice]=cluster;
 
+        ArrayList<Integer> newPoints = new ArrayList<>(region);
 
-
-        for (int i=0; i<region.size(); i++){
-            int indiceCourant=region.get(i);
+        while(!newPoints.isEmpty()){
+            int indiceCourant=newPoints.remove(0);
 
             if(result[indiceCourant]==0){
                 result[indiceCourant]=-1;
 
-                ArrayList<Integer> regionI=regionQuery(tabCouleurs, indiceCourant);
+                ArrayList<Integer> regionI=regionQuery(tabCouleurs, indiceCourant, result);
 
-                if(regionI.size()>minPts){
+                System.out.println(newPoints.size());
+                if(regionI.size()>=minPts){
                     for(int ind : regionI){
-                        region.add(ind);
+                        if(newPoints.contains(ind)==false) {
+                            newPoints.add(ind);
+                        }
                     }
                 }
+                System.out.println(newPoints.size());
             }
 
             if(result[indiceCourant]==0 || result[indiceCourant]==-1){

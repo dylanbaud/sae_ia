@@ -21,8 +21,8 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
-        DBScan dbScan=new DBScan(new NormeRedmean(), 8, 6);
-        int[][] data=OutilCouleur.convertTab("img/planete5.jpg");
+        DBScan dbScan=new DBScan(new NormeRedmean(), 2, 15);
+        int[][] data=OutilCouleur.convertTab("img/antoine.png");
         System.out.println(Arrays.toString(dbScan.run(data)));
     }
 }
