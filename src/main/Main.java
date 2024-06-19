@@ -2,6 +2,7 @@ package main;
 
 import algos.DBScan;
 import filtres.ClusterImage;
+import norme.NormeBase;
 import norme.NormeEuclidienne;
 import norme.NormeRedmean;
 import norme.OutilCouleur;
@@ -21,7 +22,7 @@ public class Main {
          */
 
         String filename="img/75x75.png";
-        DBScan dbScan=new DBScan(new NormeRedmean(), 7, 8);
+        DBScan dbScan=new DBScan(new NormeBase(), 5, 6);
         int[][] data=OutilCouleur.convertTab(filename);
         int[] result=dbScan.run(data);
 

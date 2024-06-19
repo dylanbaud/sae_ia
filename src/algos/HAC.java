@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HAC {
+public class HAC implements Algorithme {
 
     private NormeCouleurs normeCouleurs;
     private List<List<int[]>> history;
