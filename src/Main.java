@@ -21,7 +21,6 @@ public class Main {
 
         DBScan dbScan=new DBScan(new NormeRedmean(), 8, 6);
         int[][] data=OutilCouleur.convertTab("img/flouGausien2.jpg");
-        System.out.println(Arrays.deepToString(data));
         System.out.println(Arrays.toString(dbScan.run(data)));
     }
 }
