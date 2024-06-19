@@ -20,7 +20,7 @@ public class Main {
          */
 
         DBScan dbScan=new DBScan(new NormeRedmean(), 8, 6);
-        int[][] data=OutilCouleur.convertTab("img/flouGausien2.jpg");
+        int[][] data=OutilCouleur.convertTab("img/planete5.jpg");
         System.out.println(Arrays.toString(dbScan.run(data)));
     }
 }

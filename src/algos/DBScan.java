@@ -27,13 +27,14 @@ public class DBScan {
         int cluster=0;
         int[] result=new int[tabCouleurs.length];
         for(int i=0; i< tabCouleurs.length; i++) {
-            ArrayList<Integer> region = regionQuery(tabCouleurs, i);
-            if(region.size()>=minPts){
-                cluster+=1;
-                expandCluster(tabCouleurs, i, region, cluster, result);
-            }
-            else{
-                result[i]=-1;
+            if(result[i]==0) {
+                ArrayList<Integer> region = regionQuery(tabCouleurs, i);
+                if (region.size() >= minPts) {
+                    cluster += 1;
+                    expandCluster(tabCouleurs, i, region, cluster, result);
+                } else {
+                    result[i] = -1;
+                }
             }
         }
         return result;
@@ -76,7 +77,9 @@ public class DBScan {
                 ArrayList<Integer> regionI=regionQuery(tabCouleurs, indiceCourant);
 
                 if(regionI.size()>minPts){
-                    region.addAll(regionI);
+                    for(int ind : regionI){
+                        region.add(ind);
+                    }
                 }
             }
 
