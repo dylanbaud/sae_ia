@@ -12,8 +12,6 @@ public class Main {
     public static void main(String[] args) {
 
         HAC hac = new HAC(new NormeRedmean());
-        int[][] data = OutilCouleur.convertTab("img/16x16.png");
-        assert data != null;
-        System.out.println(Arrays.toString(hac.run(data)));
+        int[][] data = OutilCouleur.convertTab("img/flouMoyenne.jpg");
     }
 }
