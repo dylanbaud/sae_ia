@@ -1,9 +1,12 @@
 package main;
 
 import algos.DBScan;
+import filtres.ClusterImage;
+import norme.NormeEuclidienne;
 import norme.NormeRedmean;
 import norme.OutilCouleur;
 
+import java.awt.*;
 import java.util.Arrays;
 
 public class Main {
@@ -17,11 +20,13 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
-        DBScan dbScan=new DBScan(new NormeRedmean(), 2, 15);
-        int[][] data=OutilCouleur.convertTab("img/antoing");
+        String filename="img/75x75.png";
+        DBScan dbScan=new DBScan(new NormeRedmean(), 7, 8);
+        int[][] data=OutilCouleur.convertTab(filename);
         int[] result=dbScan.run(data);
 
-        System.out.println(Arrays.toString(result));
+        ClusterImage.afficherClusters(result, filename, "img/DBSCAN_IMAGE.png");
 
+        System.out.println(Arrays.toString(result));
     }
 }

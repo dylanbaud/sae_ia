@@ -72,11 +72,10 @@ public class DBScan {
             int indiceCourant=newPoints.remove(0);
 
             if(result[indiceCourant]==0){
-                result[indiceCourant]=-1;
+                //result[indiceCourant]=-1;
 
                 ArrayList<Integer> regionI=regionQuery(tabCouleurs, indiceCourant, result);
 
-                System.out.println(newPoints.size());
                 if(regionI.size()>=minPts){
                     for(int ind : regionI){
                         if(newPoints.contains(ind)==false) {
@@ -84,7 +83,6 @@ public class DBScan {
                         }
                     }
                 }
-                System.out.println(newPoints.size());
             }
 
             if(result[indiceCourant]==0 || result[indiceCourant]==-1){
