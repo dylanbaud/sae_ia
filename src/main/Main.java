@@ -2,6 +2,7 @@ package main;
 
 import algos.DBScan;
 import algos.HAC;
+import algos.KMeans_v2;
 import filtres.Biome;
 import filtres.ClusterImage;
 import norme.*;
@@ -20,13 +21,15 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
-        String filename = "img/16x16.png";
+        String filename = "img/flouGausien.jpg";
         int[][] data = OutilCouleur.convertTab(filename);
         assert data != null;
-        HAC hac = new HAC(new NormeBase(), 400);
-        int[] clusters = hac.run(data);
+        KMeans_v2 kmeans = new KMeans_v2();
+        int[] clusters = kmeans.run(10, data);
 
         Palette palette = new Palette(new Color[]{Biome.TUNDRA.getColor(), Biome.TAIGA.getColor(), Biome.FORET_TEMPEREE.getColor(), Biome.FORET_TROPICALE.getColor(), Biome.SAVANE.getColor(), Biome.PRAIRIE.getColor(), Biome.DESERT.getColor(), Biome.GLACIER.getColor(), Biome.EAU_PEU_PROFONDE.getColor(), Biome.EAU_PROFONDE.getColor()});
-        ClusterImage.afficherClustersBiome(clusters, filename, "img/16x16_hac.png", palette);
+
+        ClusterImage.afficherClustersBiome(clusters, filename, "img/kmeans.jpg", palette);
+        ClusterImage.afficherBiome(clusters, filename, "img/kmeans_savane.jpg", palette, Biome.SAVANE);
     }
 }
