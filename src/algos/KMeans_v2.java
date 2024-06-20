@@ -155,5 +155,5 @@ public class KMeans_v2 implements Algorithme {
             return new Color(sommeR / nb, sommeG / nb, sommeB / nb);
         }
     }
-    
+
 }
