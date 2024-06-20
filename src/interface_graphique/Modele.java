@@ -2,7 +2,6 @@ package interface_graphique;
 
 import algos.DBScan;
 import algos.HAC;
-import algos.KMeans_v1;
 import algos.KMeans_v2;
 import filtres.Biome;
 import filtres.ClusterImage;
@@ -10,7 +9,7 @@ import filtres.FlouMoyenne;
 import filtres.Gausien;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
-import javafx.css.converter.ColorConverter;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -20,12 +19,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import norme.NormeRedmean;
-import norme.OutilCouleur;
-import norme.Palette;
-import norme.Pixel2;
+import norme.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -67,7 +62,7 @@ public class Modele {
     /**
      * Ecart-type par défaut pour les algorithmes
      */
-    public static final int ECART_TYPE = 5;
+    public static final int ECART_TYPE = 10;
 
     /**
      * Taille d'une matrice pour les algorithmes en ayant besoin
@@ -110,11 +105,11 @@ public class Modele {
         // Floute l'image avant la traiter
         String fichierTemp = getFichierCourant();
         if (flouter) {
-            /*Gausien flou = new Gausien(getFichierCourant(), nouvFichier);
-            flou.flouter(21, Modele.ECART_TYPE);*/
+            Gausien flou = new Gausien(getFichierCourant(), nouvFichier);
+            flou.flouter(27, 20);
 
-            FlouMoyenne flou = new FlouMoyenne(fichierTemp, nouvFichier);
-            flou.flouter(3);
+            /*FlouMoyenne flou = new FlouMoyenne(fichierTemp, nouvFichier);
+            flou.flouter(3);*/
 
             // Le fichier sur lequel on se base est celui flouté
             fichierTemp = nouvFichier;
@@ -174,7 +169,14 @@ public class Modele {
      */
     public void setBiomes(HashMap<String, Color> biomes) {
         containerBiomes.getChildren().clear();
-        containerBiomes.getChildren().add(new Text("Biomes repérés :\n\n"));
+
+        // Pour remettre tous les biomes
+        Button tousBiomes = new Button("Tout afficher");
+
+        ControleurRetour controleurRetour = new ControleurRetour(this);
+        tousBiomes.setOnAction(controleurRetour);
+
+        containerBiomes.getChildren().addAll(new Text("Biomes :\n(Cliquez sur un biome)\n"), tousBiomes);
 
         // Ajoute en légende la couleur de chaque biome et son nom
         biomes.forEach((nom, color) -> {
@@ -194,7 +196,7 @@ public class Modele {
 
     // Des setters et des getters
     public void afficherBiome(String biome) {
-        String nouvFichier = getFichierCourant() + "-traitee" + ".jpg";
+        String nouvFichier = getFichierCourant() + "-traitee-biome" + ".jpg";
         ClusterImage.afficherBiome(dernierResult, getFichierCourant(), nouvFichier, palette, Biome.valueOf(biome));
 
         Image image = new Image("file:"+nouvFichier, Modele.TAILLE_MAX, Modele.TAILLE_MAX, true, false);

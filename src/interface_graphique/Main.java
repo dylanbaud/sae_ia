@@ -14,8 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main extends Application {
@@ -54,17 +52,18 @@ public class Main extends Application {
 
         ComboBox<String> comboBoxAlgos = new ComboBox<>(FXCollections.observableArrayList(Modele.ALGORITHMES));
         Button btnTraiter = new Button("Repérer des biomes");
+
         Text labelTemps = new Text("(Peut prendre du temps selon la taille de l'image)");
         labelTemps.setFont(Font.font (12));
 
         ControleurOuvrir contrOuvrir = new ControleurOuvrir(modele);
         ControleurTraiter contrTraiter = new ControleurTraiter(modele);
-        ControleurAlgorithmes controleurAlgorithmes = new ControleurAlgorithmes(modele);
-        ControleurFlouter controleurFlouter = new ControleurFlouter(modele);
+        ControleurAlgorithmes contrAlgorithmes = new ControleurAlgorithmes(modele);
+        ControleurFlouter contrFlouter = new ControleurFlouter(modele);
         ouvrir.setOnAction(contrOuvrir);
         btnTraiter.setOnAction(contrTraiter);
-        comboBoxAlgos.setOnAction(controleurAlgorithmes);
-        cbFlouter.setOnAction(controleurFlouter);
+        comboBoxAlgos.setOnAction(contrAlgorithmes);
+        cbFlouter.setOnAction(contrFlouter);
 
         // CSS pour ceux qui ne savent pas en faire
         principal.setSpacing(10);
