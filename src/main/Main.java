@@ -22,7 +22,7 @@ public class Main {
          */
 
         String filename="img/75x75.png";
-        DBScan dbScan=new DBScan(new NormeBase(), 5, 6);
+        DBScan dbScan=new DBScan(new NormeBase(), 16, 5);
         int[][] data=OutilCouleur.convertTab(filename);
         int[] result=dbScan.run(data);
 

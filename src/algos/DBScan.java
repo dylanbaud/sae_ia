@@ -10,81 +10,88 @@ import java.util.Set;
 
 public class DBScan implements Algorithme {
 
-    private Set<Integer> traites;
     private NormeCouleurs norme;
     private double eps;
     private int minPts;
 
-    public DBScan(NormeCouleurs n, double e, int m) {
+    private int[] result;
+
+    private boolean[] traites;
+
+    public DBScan(NormeCouleurs n, double e, int mp){
         norme = n;
         eps = e;
-        minPts = m;
-        traites = new HashSet<>();
+        minPts = mp;
     }
 
-    public int[] run(int[][] tabCouleurs) {
-        traites.clear();
+    public int[] run(int[][] tabCouleurs){
         int cluster = 0;
-        int[] result = new int[tabCouleurs.length];
+        result = new int[tabCouleurs.length];
+        traites = new boolean[tabCouleurs.length];
 
-        for (int i = 0; i < tabCouleurs.length; i++) {
-            if (!traites.contains(i)) {
-                traites.add(i);
-                List<Integer> region = regionQuery(tabCouleurs, i);
-                if (region.size() >= minPts) {
-                    cluster++;
-                    expandCluster(tabCouleurs, i, region, cluster, result);
+        for(int n = 0; n < tabCouleurs.length; n++){
+            if(!traites[n]){
+                traites[n] = true;
+                ArrayList<Integer> region = regionQuery(tabCouleurs, n);
+                if(region.size() >= minPts){
+                    cluster += 1;
+                    expandCluster(tabCouleurs, n, cluster, region);
                 } else {
-                    result[i] = -1;
+                    result[n] = -1;
                 }
             }
         }
+
         return result;
     }
 
-    private List<Integer> regionQuery(int[][] tabCouleurs, int indice) {
-        List<Integer> region = new ArrayList<>();
-        int[] point1 = tabCouleurs[indice];
-        Color c1 = new Color(point1[0], point1[1], point1[2]);
+    private void expandCluster(int[][] tabCouleurs, int n, int cluster, ArrayList<Integer> region){
+        result[n] = cluster;
+        ArrayList<Integer> newPoints = new ArrayList<>(region);
+        for(int i = 0; i < newPoints.size(); i++){
+            int pointIndex = newPoints.get(i);
+            if(!traites[pointIndex]){
+                traites[pointIndex] = true;
+                ArrayList<Integer> regionI = regionQuery(tabCouleurs, pointIndex);
 
-        for (int i = 0; i < tabCouleurs.length; i++) {
-            if (i != indice) {
-                int[] point2 = tabCouleurs[i];
-                Color c2 = new Color(point2[0], point2[1], point2[2]);
-                double distance = norme.distance(c1, c2);
-
-                if (distance <= eps) {
-                    region.add(i);
-                }
-            }
-        }
-
-        return region;
-    }
-
-    private void expandCluster(int[][] tabCouleurs, int indice, List<Integer> region, int cluster, int[] result) {
-        result[indice] = cluster;
-        List<Integer> newPoints = new ArrayList<>(region);
-
-        while (!newPoints.isEmpty()) {
-            int indiceCourant = newPoints.remove(0);
-
-            if (!traites.contains(indiceCourant)) {
-                traites.add(indiceCourant);
-                List<Integer> regionI = regionQuery(tabCouleurs, indiceCourant);
-
-                if (regionI.size() >= minPts) {
-                    for (int ind : regionI) {
-                        if (!newPoints.contains(ind)) {
+                if(regionI.size() >= minPts){
+                    for(int ind : regionI){
+                        if(!newPoints.contains(ind)){
                             newPoints.add(ind);
                         }
                     }
                 }
             }
 
-            if (result[indiceCourant] == 0) {
-                result[indiceCourant] = cluster;
+            if(result[pointIndex] == 0 || result[pointIndex] == -1){
+                result[pointIndex] = cluster;
             }
         }
     }
+
+    private ArrayList<Integer> regionQuery(int[][] tabCouleurs, int n){
+        ArrayList<Integer> region = new ArrayList<>();
+        int[] point1 = tabCouleurs[n];
+
+        Color c1 = new Color(point1[0], point1[1], point1[2]);
+
+        for(int i = 0; i < tabCouleurs.length; i++){
+            if(i != n){
+
+                int[] point2 = tabCouleurs[i];
+
+                if(distance(point1, point2)<=eps) {
+                    Color c2 = new Color(point2[0], point2[1], point2[2]);
+                    if (norme.distance(c1, c2) <= eps) {
+                        region.add(i);
+                    }
+                }
+            }
+        }
+        return region;
+    }
+    private double distance(int[] point1, int[] point2){
+        return Math.pow(point1[3] - point2[3], 2) + Math.pow(point1[4] - point2[4], 2);
+    }
 }
+
