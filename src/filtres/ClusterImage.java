@@ -25,26 +25,26 @@ public class ClusterImage {
         }
 
         int largeur = image.getWidth();
-        int longueur = image.getHeight();
+        int hauteur = image.getHeight();
 
-        BufferedImage imageCopy = new BufferedImage(largeur, longueur, image.getType());
+        BufferedImage imageCopy = new BufferedImage(largeur, hauteur, image.getType());
         int x = 0;
         int y = 0;
 
         for (int cluster : tabClusters) {
             if (cluster != -1) {
                 if (!clusterColor.containsKey(cluster)) {
-                    Color color = palette.getPlusProche(new Color(image.getRGB(y, x)), new norme.NormeBase());
+                    Color color = palette.getPlusProche(new Color(image.getRGB(x, y)), new norme.NormeBase());
                     clusterColor.put(cluster, color);
                 }
-                imageCopy.setRGB(y, x, clusterColor.get(cluster).getRGB());
+                imageCopy.setRGB(x, y, clusterColor.get(cluster).getRGB());
             } else {
-                imageCopy.setRGB(y, x, Color.white.getRGB());
+                imageCopy.setRGB(x, y, Color.white.getRGB());
             }
-            x += 1;
-            if (x >= largeur) {
-                x = 0;
-                y += 1;
+            y += 1;
+            if (y >= hauteur) {
+                y = 0;
+                x += 1;
             }
         }
 
@@ -69,20 +69,20 @@ public class ClusterImage {
         }
 
         int largeur = image.getWidth();
-        int longueur = image.getHeight();
+        int hauteur = image.getHeight();
 
-        BufferedImage imageCopy = new BufferedImage(largeur, longueur, image.getType());
+        BufferedImage imageCopy = new BufferedImage(largeur, hauteur, image.getType());
         int x = 0;
         int y = 0;
 
         for (int cluster : tabClusters) {
             if (cluster != -1) {
                 if (!clusterColor.containsKey(cluster)) {
-                    Color color = palette.getPlusProche(new Color(image.getRGB(y, x)), new norme.NormeBase());
+                    Color color = palette.getPlusProche(new Color(image.getRGB(x, y)), new norme.NormeBase());
                     clusterColor.put(cluster, color);
                 }
                 if (biome.getColor().equals(clusterColor.get(cluster))) {
-                    imageCopy.setRGB(y, x, clusterColor.get(cluster).getRGB());
+                    imageCopy.setRGB(x, y, clusterColor.get(cluster).getRGB());
                 } else {
                     Color color = clusterColor.get(cluster);
 
@@ -95,15 +95,15 @@ public class ClusterImage {
                     blue = (int) Math.round(blue + 0.75 * (255 - blue));
 
                     Color newColor = new Color(red, green, blue);
-                    imageCopy.setRGB(y, x, newColor.getRGB());
+                    imageCopy.setRGB(x, y, newColor.getRGB());
                 }
             } else {
-                imageCopy.setRGB(y, x, Color.white.getRGB());
+                imageCopy.setRGB(x, y, Color.white.getRGB());
             }
-            x += 1;
-            if (x >= largeur) {
-                x = 0;
-                y += 1;
+            y += 1;
+            if (y >= hauteur) {
+                y = 0;
+                x += 1;
             }
         }
 
