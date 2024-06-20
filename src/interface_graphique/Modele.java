@@ -4,6 +4,7 @@ import algos.DBScan;
 import algos.HAC;
 import algos.KMeans_v1;
 import algos.KMeans_v2;
+import filtres.Biome;
 import filtres.ClusterImage;
 import filtres.FlouMoyenne;
 import filtres.Gausien;
@@ -21,12 +22,27 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import norme.NormeRedmean;
 import norme.OutilCouleur;
+import norme.Palette;
 import norme.Pixel2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Modele {
+
+    public static final Palette palette = new Palette(new java.awt.Color[]{
+            Biome.TUNDRA.getColor(),
+            Biome.TAIGA.getColor(),
+            Biome.FORET_TEMPEREE.getColor(),
+            Biome.FORET_TROPICALE.getColor(),
+            Biome.SAVANE.getColor(),
+            Biome.PRAIRIE.getColor(),
+            Biome.DESERT.getColor(),
+            Biome.GLACIER.getColor(),
+            Biome.EAU_PEU_PROFONDE.getColor(),
+            Biome.EAU_PROFONDE.getColor()
+    });
 
     /**
      * Nombre de clusters pour certains algorithmes
@@ -36,7 +52,7 @@ public class Modele {
     /**
      * Liste des algorithmes existants
      */
-    public static final String[] ALGORITHMES = {"DBScan", "KMeans", "HAC", "Flou"};
+    public static final String[] ALGORITHMES = {"KMeans", "DBScan", "HAC", "Flou"};
 
     /**
      * Taille visuelle maximale d'une image
@@ -58,6 +74,7 @@ public class Modele {
      */
     public static final int TAILLE_MATRICE = 8;
 
+    private int[] dernierResult;
     private Stage stage;
     private Rectangle imageTraitee;
     private Rectangle imageOriginale;
@@ -82,6 +99,7 @@ public class Modele {
         this.fichierCourant = fichierCourant;
         this.algorithme = "Flou";
         this.flouter = false;
+        dernierResult = new int[]{};
     }
 
     /**
@@ -92,8 +110,11 @@ public class Modele {
         // Floute l'image avant la traiter
         String fichierTemp = getFichierCourant();
         if (flouter) {
-            Gausien flou = new Gausien(getFichierCourant(), nouvFichier);
-            flou.flouter(5, Modele.ECART_TYPE);
+            /*Gausien flou = new Gausien(getFichierCourant(), nouvFichier);
+            flou.flouter(21, Modele.ECART_TYPE);*/
+
+            FlouMoyenne flou = new FlouMoyenne(fichierTemp, nouvFichier);
+            flou.flouter(3);
 
             // Le fichier sur lequel on se base est celui flouté
             fichierTemp = nouvFichier;
@@ -104,18 +125,21 @@ public class Modele {
                 DBScan dbScan = new DBScan(new NormeRedmean(), Modele.ECART_TYPE, Modele.TAILLE_MATRICE);
                 int[][] data = OutilCouleur.convertTab(fichierTemp);
                 int[] result = dbScan.run(data);
-                ClusterImage.afficherClusters(result, fichierTemp, nouvFichier);
+                dernierResult = result;
+                ClusterImage.afficherClustersBiome(result, fichierTemp, nouvFichier, palette);
             }
             case "KMeans" -> {
                 KMeans_v2 kMeans = new KMeans_v2(NB_CLUSTERS);
                 int[][] tabImage = OutilCouleur.convertTab(fichierTemp);
-                int[] tabRes = kMeans.run(tabImage);
-                ClusterImage.afficherClusters(tabRes, fichierTemp, nouvFichier);
+                int[] result = kMeans.run(tabImage);
+                dernierResult = result;
+                ClusterImage.afficherClustersBiome(result, fichierTemp, nouvFichier, palette);
             }
             case  "HAC" -> {
                 HAC hac = new HAC(new NormeRedmean(), 2);
                 int[] result = hac.run(Objects.requireNonNull(OutilCouleur.convertTab(fichierTemp)));
-                ClusterImage.afficherClusters(result, fichierTemp, nouvFichier);
+                dernierResult = result;
+                ClusterImage.afficherClustersBiome(result, fichierTemp, nouvFichier, palette);
             }
             default -> {
                 FlouMoyenne flou = new FlouMoyenne(fichierTemp, nouvFichier);
@@ -148,14 +172,14 @@ public class Modele {
      * Met à jour la liste des biomes trouvés
      * @param biomes les données des biomes
      */
-    public void setBiomes(ArrayList<String> biomes) {
+    public void setBiomes(HashMap<String, Color> biomes) {
         containerBiomes.getChildren().clear();
         containerBiomes.getChildren().add(new Text("Biomes repérés :\n\n"));
 
         // Ajoute en légende la couleur de chaque biome et son nom
-        for (String biome : biomes) {
+        biomes.forEach((nom, color) -> {
             HBox hb = new HBox();
-            Rectangle couleur = new Rectangle(40, 25, new Color(0.5, 0.2, 0.4, 1));
+            Rectangle couleur = new Rectangle(40, 25, color);
             couleur.setStroke(Color.BLACK);
 
             // Affiche un biome spécifique quand on clique sur l'un d'eux
@@ -163,12 +187,19 @@ public class Modele {
             hb.setOnMouseClicked(c);
 
             hb.getChildren().add(couleur);
-            hb.getChildren().add(new Text(" " + biome + "\n"));
+            hb.getChildren().add(new Text(nom));
             containerBiomes.getChildren().add(hb);
-        }
+        });
     }
 
     // Des setters et des getters
+    public void afficherBiome(String biome) {
+        String nouvFichier = getFichierCourant() + "-traitee" + ".jpg";
+        ClusterImage.afficherBiome(dernierResult, getFichierCourant(), nouvFichier, palette, Biome.valueOf(biome));
+
+        Image image = new Image("file:"+nouvFichier, Modele.TAILLE_MAX, Modele.TAILLE_MAX, true, false);
+        setImage(image, getImageTraitee());
+    }
     public void setAlgorithme(String algo) {this.algorithme = algo;}
     public void setFlouter(boolean flouter) {this.flouter = flouter;}
     public void setFichierCourant(String f) {this.fichierCourant = f;}

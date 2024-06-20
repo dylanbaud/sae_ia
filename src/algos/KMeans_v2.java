@@ -14,15 +14,20 @@ import java.util.TreeMap;
  */
 public class KMeans_v2 implements Algorithme {
 
+    private int nbClusters;
+
+    public KMeans_v2(int n) {
+        this.nbClusters = n;
+    }
+
     /**
      * L'algorithme KMeans est un algorithme de clustering qui permet
      * de regrouper des données en K clusters.
      *
-     * @param nbClusters  le nombre de clusters à former (nombre de centres)
      * @param tabCouleurs liste de couleur avec leurs coordonnées et leur couleur
      * @return les groupes de pixels correspondants aux clusters
      */
-    public int[] run(int nbClusters, int[][] tabCouleurs) {
+    public int[] run(int[][] tabCouleurs) {
 
         // on vérifie que le nombre de groupes est supérieur à 0
         if (nbClusters >= 0) {
@@ -45,7 +50,6 @@ public class KMeans_v2 implements Algorithme {
             }
 
             int[] tabResults = new int[tabCouleurs.length];
-            int l = 0;
 
             // boucle principale
             while (!fini) {
@@ -69,9 +73,6 @@ public class KMeans_v2 implements Algorithme {
                     // on met à jour la liste de centroïdes en fonction de la nouvelle moyenne
                     c.put(i, moyenne(tabResults, tabCouleurs, i));
                 }
-
-                l++;
-                System.out.println(l);
 
                 // condition d'arrêt, si entre 2 itérations les moyennes des couleurs
                 // des clusters sont égaux alors on s'arrête

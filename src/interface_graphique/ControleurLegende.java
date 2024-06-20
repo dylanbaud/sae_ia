@@ -1,5 +1,7 @@
 package interface_graphique;
 
+import filtres.Biome;
+import filtres.ClusterImage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -19,12 +21,10 @@ public class ControleurLegende implements EventHandler<MouseEvent> {
     public void handle(MouseEvent mouseEvent) {
         HBox hb = (HBox) mouseEvent.getSource();
 
-        Rectangle couleur = (Rectangle) hb.getChildren().get(0);
+        //Rectangle couleur = (Rectangle) hb.getChildren().get(0);
         Text nom = (Text) hb.getChildren().get(1);
 
-        System.out.println(couleur.getFill());
-        System.out.println(nom.getText());
-
         // N'afficher que celui-là
+        m.afficherBiome(nom.getText());
     }
 }

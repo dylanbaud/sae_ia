@@ -24,8 +24,8 @@ public class Main {
         String filename = "img/flouGausien.jpg";
         int[][] data = OutilCouleur.convertTab(filename);
         assert data != null;
-        KMeans_v2 kmeans = new KMeans_v2();
-        int[] clusters = kmeans.run(10, data);
+        KMeans_v2 kmeans = new KMeans_v2(10);
+        int[] clusters = kmeans.run(data);
 
         Palette palette = new Palette(new Color[]{Biome.TUNDRA.getColor(), Biome.TAIGA.getColor(), Biome.FORET_TEMPEREE.getColor(), Biome.FORET_TROPICALE.getColor(), Biome.SAVANE.getColor(), Biome.PRAIRIE.getColor(), Biome.DESERT.getColor(), Biome.GLACIER.getColor(), Biome.EAU_PEU_PROFONDE.getColor(), Biome.EAU_PROFONDE.getColor()});
 

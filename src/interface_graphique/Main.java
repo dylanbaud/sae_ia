@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Main extends Application {
 
@@ -74,7 +75,7 @@ public class Main extends Application {
         containerImages.setPadding(new Insets(20));
 
         // Ajout des widgets
-        modele.setBiomes(new ArrayList<>(Arrays.asList("Biome 1", "Biome 2", "Biome 3")));
+        modele.setBiomes(new HashMap<>());
         containerImgOriginal.getChildren().addAll(new Text("Image originale"), imgOriginale);
         containerImgTraitee.getChildren().addAll(new Text("Image traitée"), imgTraitee);
         containerImages.getChildren().addAll(containerImgOriginal, containerImgTraitee, containerBiomes);
