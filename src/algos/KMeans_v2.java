@@ -45,7 +45,6 @@ public class KMeans_v2 implements Algorithme {
             }
 
             int[] tabResults = new int[tabCouleurs.length];
-            int l = 0;
 
             // boucle principale
             while(!fini){
@@ -69,9 +68,6 @@ public class KMeans_v2 implements Algorithme {
                     // on met à jour la liste de centroïdes en fonction de la nouvelle moyenne
                     c.put(i, moyenne(tabResults, tabCouleurs, i));
                 }
-
-                l++;
-                System.out.println(l);
 
                 // condition d'arrêt, si entre 2 itérations les moyennes des couleurs
                 // des clusters sont égaux alors on s'arrête
@@ -158,14 +154,11 @@ public class KMeans_v2 implements Algorithme {
 
     public static void main(String[] args) throws IOException {
 
-        // image utilisée pour réaliser le clustering
         KMeans_v2 kMeans = new KMeans_v2();
 
         int[][] tabImage = OutilCouleur.convertTab("img/flouGausien.jpg");
-        System.out.println("Image convertie !");
 
         int[] tabRes = kMeans.run(10, tabImage);
-        System.out.println("Biomes calculés !");
 
         ClusterImage.afficherClusters(tabRes, "img/flouGausien.jpg", "img/nouvelleImageKMeansV2.jpg");
         System.out.println("Image générée avec succès !");
