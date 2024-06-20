@@ -28,22 +28,20 @@ public class ClusterImage {
         int x=0;
         int y=0;
 
-        for(int i=0; i<tabClusters.length; i++){
-            int cluster=tabClusters[i];
-            if(cluster!=-1){
-                if(clusterColor.containsKey(cluster)==false){
-                    Color color=new Color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
+        for (int cluster : tabClusters) {
+            if (cluster != -1) {
+                if (!clusterColor.containsKey(cluster)) {
+                    Color color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
                     clusterColor.put(cluster, color);
                 }
-                imageCopy.setRGB(y,x, clusterColor.get(cluster).getRGB());
+                imageCopy.setRGB(y, x, clusterColor.get(cluster).getRGB());
+            } else {
+                imageCopy.setRGB(y, x, Color.white.getRGB());
             }
-            else{
-                imageCopy.setRGB(y,x, Color.white.getRGB());
-            }
-            x+=1;
-            if(x>=largeur){
-                x=0;
-                y+=1;
+            x += 1;
+            if (x >= largeur) {
+                x = 0;
+                y += 1;
             }
         }
 

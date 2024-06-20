@@ -1,6 +1,6 @@
 package algos;
 
-import outils.Pixel;
+import norme.Pixel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
