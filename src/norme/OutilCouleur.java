@@ -98,6 +98,8 @@ public class OutilCouleur {
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getHeight(); y++) {
                     int[] tabColor = getTabColor(image.getRGB(x, y));
+                    tabColor[3]=x;
+                    tabColor[4]=y;
                     res[index] = tabColor;
                     index++;
                 }
