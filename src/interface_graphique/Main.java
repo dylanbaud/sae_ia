@@ -1,34 +1,21 @@
 package interface_graphique;
 
 import javafx.application.Application;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -49,24 +36,34 @@ public class Main extends Application {
         menuBar.getMenus().add(menu);
 
         // Images
-        Image image = new Image("file:"+Constantes.IMAGE_DEFAUT, Constantes.TAILLE_MAX, Constantes.TAILLE_MAX, true, false);
-        Rectangle imgTraitee = new Rectangle(Constantes.TAILLE_MAX, Constantes.TAILLE_MAX);
-        Rectangle imgOriginale = new Rectangle(Constantes.TAILLE_MAX, Constantes.TAILLE_MAX);
+        Image image = new Image("file:"+Modele.IMAGE_DEFAUT, Modele.TAILLE_MAX, Modele.TAILLE_MAX, true, false);
+        Rectangle imgTraitee = new Rectangle(Modele.TAILLE_MAX, Modele.TAILLE_MAX);
+        Rectangle imgOriginale = new Rectangle(Modele.TAILLE_MAX, Modele.TAILLE_MAX);
 
         // Modele
-        Modele modele = new Modele(stage, imgTraitee, imgOriginale, containerBiomes, Constantes.IMAGE_DEFAUT);
+        Modele modele = new Modele(stage, imgTraitee, imgOriginale, containerBiomes, Modele.IMAGE_DEFAUT);
 
         // Affiche l'image par défaut
         modele.setImage(image, modele.getImageOriginale());
         modele.setImage(image, modele.getImageTraitee());
 
         // Contrôleurs
+        CheckBox cbFlouter = new CheckBox("Pré flouter l'image");
+        cbFlouter.setIndeterminate(false);
+
+        ComboBox<String> comboBoxAlgos = new ComboBox<>(FXCollections.observableArrayList(Modele.ALGORITHMES));
         Button btnTraiter = new Button("Repérer des biomes");
+        Text labelTemps = new Text("(Peut prendre du temps selon la taille de l'image)");
+        labelTemps.setFont(Font.font (12));
 
         ControleurOuvrir contrOuvrir = new ControleurOuvrir(modele);
         ControleurTraiter contrTraiter = new ControleurTraiter(modele);
+        ControleurAlgorithmes controleurAlgorithmes = new ControleurAlgorithmes(modele);
+        ControleurFlouter controleurFlouter = new ControleurFlouter(modele);
         ouvrir.setOnAction(contrOuvrir);
         btnTraiter.setOnAction(contrTraiter);
+        comboBoxAlgos.setOnAction(controleurAlgorithmes);
+        cbFlouter.setOnAction(controleurFlouter);
 
         // CSS pour ceux qui ne savent pas en faire
         principal.setSpacing(10);
@@ -77,11 +74,11 @@ public class Main extends Application {
         containerImages.setPadding(new Insets(20));
 
         // Ajout des widgets
-        containerBiomes.getChildren().addAll(new Text("Biomes repérés : "), new HBox(new Rectangle(20, 15, new Color(0.5, 0.2, 0.4, 1))), new Text("Placeholder"), new HBox(new Rectangle(20, 15, new Color(0.1, 0.7, 0.4, 1))), new Text("Placeholder"));
-        containerImgOriginal.getChildren().addAll(new Text("Image originale : "), imgOriginale);
-        containerImgTraitee.getChildren().addAll(new Text("Image traitée : "), imgTraitee);
+        modele.setBiomes(new ArrayList<>(Arrays.asList("Biome 1", "Biome 2", "Biome 3")));
+        containerImgOriginal.getChildren().addAll(new Text("Image originale"), imgOriginale);
+        containerImgTraitee.getChildren().addAll(new Text("Image traitée"), imgTraitee);
         containerImages.getChildren().addAll(containerImgOriginal, containerImgTraitee, containerBiomes);
-        principal.getChildren().addAll(menuBar, btnTraiter, containerImages);
+        principal.getChildren().addAll(menuBar, comboBoxAlgos, cbFlouter, btnTraiter, labelTemps, containerImages);
 
         // Main
         Scene scene = new Scene(principal);

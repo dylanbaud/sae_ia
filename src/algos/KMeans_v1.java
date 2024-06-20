@@ -29,9 +29,9 @@ public class KMeans_v1 implements Algorithme {
      * @param cheminImage chemin de l'image sur laquelle on veut déterminer les différents biomes
      */
     public KMeans_v1(String cheminImage) {
-        try{
+        try {
             this.image = ImageIO.read(new File(cheminImage));
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Problème lors de la lecture de l'image.");
         }
     }
@@ -41,13 +41,13 @@ public class KMeans_v1 implements Algorithme {
      * de regrouper des données en K clusters.
      *
      * @param nbClusters le nombre de clusters à former (nombre de centres)
-     * @param pixels liste de pixels de l'image contenant sa position et sa couleur
+     * @param pixels     liste de pixels de l'image contenant sa position et sa couleur
      * @return les groupes de pixels correspondants aux clusters
      */
     public int[] run(int nbClusters, Pixel2[] pixels) {
 
         // on vérifie que le nombre de groupes est supérieur à 0
-        if(nbClusters >= 0){
+        if (nbClusters >= 0) {
 
             // condition d'arret de l'algorithme
             boolean fini = false;
@@ -63,7 +63,7 @@ public class KMeans_v1 implements Algorithme {
             // on initialise aléatoirement la position des centres des clusters
             for (int i = 0; i < nbClusters; i++) {
                 // on choisit un pixel aléatoirement dans l'image
-                Pixel2 pixelRandom = pixels[(int)(Math.random()*pixels.length)];
+                Pixel2 pixelRandom = pixels[(int) (Math.random() * pixels.length)];
 
                 // on ajoute la couleur du pixel prit aléatoirement dans le tableau initial,
                 // il correspond à la moyenne initiale des couleurs du cluster i
@@ -73,9 +73,9 @@ public class KMeans_v1 implements Algorithme {
             int[] tabResults = new int[pixels.length];
 
             // boucle principale
-            while(!fini){
+            while (!fini) {
                 // initialisation des groupes (vides)
-                for(int i = 0; i < pixels.length; i++){
+                for (int i = 0; i < pixels.length; i++) {
                     tabResults[i] = 0;
                 }
 
@@ -95,7 +95,7 @@ public class KMeans_v1 implements Algorithme {
                 oldC = Map.copyOf(c);
 
                 // on met à jour les centroïdes en calculant les moyennes
-                for(int i = 0; i < nbClusters; i++){
+                for (int i = 0; i < nbClusters; i++) {
                     // pour le groupe courant, on calcule la moyenne et
                     // on met à jour la liste de centroïdes en fonction de la nouvelle moyenne
                     c.put(i, moyenne(tabResults, pixels, i));
@@ -103,13 +103,13 @@ public class KMeans_v1 implements Algorithme {
 
                 // condition d'arret, si entre 2 itérations les moyennes des couleurs
                 // des clusters sont égaux alors on s'arrête
-                if(oldC.equals(c)){
+                if (oldC.equals(c)) {
                     fini = true;
                 }
             }
 
             return tabResults;
-        }else{
+        } else {
             System.out.println("Le nombre de clusters doit être positif.");
         }
         return null;
@@ -119,10 +119,10 @@ public class KMeans_v1 implements Algorithme {
      * Méthode qui permet de déterminer le centroïde (pixel) le plus proche du pixel donné
      *
      * @param pixel pixel pour lequel on veut trouver le pixel le plus proche
-     * @param c tableau de pixel dans lequel on va chercher le pixel le plus proche
+     * @param c     tableau de pixel dans lequel on va chercher le pixel le plus proche
      * @return l'indice du pixel le plus proche (dans le tableau de pixel)
      */
-    public int indiceDuCentroideLePlusProche(Pixel2 pixel, Map<Integer, Color> c){
+    public int indiceDuCentroideLePlusProche(Pixel2 pixel, Map<Integer, Color> c) {
         int distanceLaPlusProche = Integer.MAX_VALUE;
         int indicePlusProche = Integer.MAX_VALUE;
 
@@ -132,7 +132,7 @@ public class KMeans_v1 implements Algorithme {
             Color c2 = c.get(i);
             int distanceCourante = formuleProximite(c1, c2);
 
-            if(distanceCourante < distanceLaPlusProche){
+            if (distanceCourante < distanceLaPlusProche) {
                 distanceLaPlusProche = distanceCourante;
                 indicePlusProche = i;
             }
@@ -147,7 +147,7 @@ public class KMeans_v1 implements Algorithme {
      * @param color2 couleur 2
      * @return la distance entre les 2 couleurs
      */
-    public int formuleProximite(Color color1, Color color2){
+    public int formuleProximite(Color color1, Color color2) {
         return (int) Math.round(Math.pow((color1.getRed() - color2.getRed()), 2) + Math.pow((color1.getGreen() - color2.getGreen()), 2) + Math.pow((color1.getBlue() - color2.getBlue()), 2));
     }
 
@@ -155,11 +155,11 @@ public class KMeans_v1 implements Algorithme {
      * Méthode qui permet de calculer la couleur moyenne d'un groupe
      *
      * @param tabResults tableau de résultat contenant une liste de numéro de cluster correspondant au cluster de chaque pixel
-     * @param pixels liste de tous les pixels avec leurs coordonnées et leur couleur
+     * @param pixels     liste de tous les pixels avec leurs coordonnées et leur couleur
      * @param numCluster numéro du cluster pour lequel on veut calculer la moyenne du cluster
      * @return la couleur moyenne d'un groupe
      */
-    public Color moyenne(int[] tabResults, Pixel2[] pixels, int numCluster){
+    public Color moyenne(int[] tabResults, Pixel2[] pixels, int numCluster) {
         int sommeR = 0;
         int sommeG = 0;
         int sommeB = 0;
@@ -167,8 +167,8 @@ public class KMeans_v1 implements Algorithme {
         int nb = 0;
 
         // on parcourt tous les pixels d'un groupe
-        for(int i = 0; i < tabResults.length; i++){
-            if(tabResults[i] == numCluster){
+        for (int i = 0; i < tabResults.length; i++) {
+            if (tabResults[i] == numCluster) {
                 Color couleurCourante = pixels[i].c;
                 sommeR += couleurCourante.getRed();
                 sommeG += couleurCourante.getGreen();
@@ -177,12 +177,11 @@ public class KMeans_v1 implements Algorithme {
             }
         }
 
-        if(nb == 0){
+        if (nb == 0) {
             return Color.RED; // Valeur par défaut si le groupe est vide
         } else {
             // on retourne une nouvelle couleur correspondant à la moyenne des couleurs des pixels du cluster
             return new Color(sommeR / nb, sommeG / nb, sommeB / nb);
         }
     }
-
 }

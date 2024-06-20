@@ -7,9 +7,6 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class ControleurOuvrir implements EventHandler<ActionEvent> {
     private Modele m;
@@ -35,7 +32,7 @@ public class ControleurOuvrir implements EventHandler<ActionEvent> {
                 m.setFichierCourant(chemin);
 
                 // Le premier true indique que l'on préserve le ratio de l'image
-                Image image = new Image("file:"+chemin, Constantes.TAILLE_MAX, Constantes.TAILLE_MAX, true, false);
+                Image image = new Image("file:"+chemin, Modele.TAILLE_MAX, Modele.TAILLE_MAX, true, false);
                 m.setImage(image, m.getImageOriginale());
             }
         }
