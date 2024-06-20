@@ -1,7 +1,6 @@
 package main;
 
 import algos.DBScan;
-import algos.HAC;
 import filtres.ClusterImage;
 import norme.NormeBase;
 import norme.NormeEuclidienne;
@@ -22,12 +21,13 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
-        String filename2 = "img/16x16.png";
-        HAC hac = new HAC(new NormeBase(), 2);
-        int[][] data2 = OutilCouleur.convertTab(filename2);
-        assert data2 != null;
-        int[] result2 = hac.run(data2);
-        ClusterImage.afficherClusters(result2, filename2, "img/16x16_hac.png");
+        String filename="img/75x75.png";
+        DBScan dbScan=new DBScan(new NormeBase(), 5, 6);
+        int[][] data=OutilCouleur.convertTab(filename);
+        int[] result=dbScan.run(data);
 
+        ClusterImage.afficherClusters(result, filename, "img/DBSCAN_IMAGE.png");
+
+        System.out.println(Arrays.toString(result));
     }
 }
