@@ -15,7 +15,7 @@ public class KMeans_v2 implements Algorithme {
 
     private final int nbClusters;
 
-    KMeans_v2(int nbClusters) {
+    public KMeans_v2(int nbClusters) {
         this.nbClusters = nbClusters;
     }
 
