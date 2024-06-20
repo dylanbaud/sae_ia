@@ -1,6 +1,26 @@
-package outils;
+package norme;
 
-public class Main {
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+
+public class OutilCouleur {
+    public static int[] getTabColor(int c) {
+        int blue = c & 0xff;
+        int green = (c & 0xff00) >> 8;
+        int red = (c & 0xff0000) >> 16;
+
+        int[] res = {red, green, blue};
+        return res;
+    }
+
     public static int[] rgb2lab(int R, int G, int B) {
         // http://www.brucelindbloom.com
 
@@ -67,5 +87,25 @@ public class Main {
         lab[1] = (int) (as + .5);
         lab[2] = (int) (bs + .5);
         return lab;
+    }
+
+    public static int[][] convertTab(String path) {
+        try {
+            File file = new File(path);
+            BufferedImage image = ImageIO.read(file);
+            int[][] res = new int[image.getWidth() * image.getHeight()][3];
+            int index = 0;
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    int[] tabColor = getTabColor(image.getRGB(x, y));
+                    res[index] = tabColor;
+                    index++;
+                }
+            }
+            return res;
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la lecture de l'image");
+            return null;
+        }
     }
 }

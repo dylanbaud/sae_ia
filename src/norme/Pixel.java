@@ -1,4 +1,4 @@
-package outils;
+package norme;
 
 public class Pixel {
 
