@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import static javax.imageio.ImageIO.write;
@@ -17,7 +16,7 @@ import static javax.imageio.ImageIO.write;
 /**
  * Classe implémentant l'algorithme KMeans
  */
-public class KMeans implements Algorithme {
+public class KMeans_v0 implements Algorithme {
 
     /**
      * Image pour laquelle on veut déterminer les différents biomes
@@ -29,7 +28,7 @@ public class KMeans implements Algorithme {
      *
      * @param cheminImage chemin de l'image sur laquelle on veut déterminer les différents biomes
      */
-    public KMeans(String cheminImage) {
+    public KMeans_v0(String cheminImage) {
         try{
             this.image = ImageIO.read(new File(cheminImage));
         }catch (IOException e){
@@ -75,9 +74,10 @@ public class KMeans implements Algorithme {
             // initialisation des groupes (liste (de la taille du nombre de groupes) de listes(liste des pixels du groupe))
             TreeMap<Integer, ArrayList<Pixel>> groupes = new TreeMap<>();
 
+
+            int iterations = 0;
             // boucle principale
             while(!fini){
-                fini = true;
                 // initialisation des groupes (vides)
                 for(int i = 0; i < nbClusters; i++){
                     groupes.put(i, new ArrayList<>());
@@ -107,6 +107,9 @@ public class KMeans implements Algorithme {
                     // on met à jour la liste de centroïdes en fonction de la nouvelle moyenne
                     c.put(i, moyenne(groupes.get(i)));
                 }
+
+                iterations++;
+                System.out.println(iterations);
 
                 // condition d'arret, si entre 2 itérations les moyennes des couleurs
                 // des clusters sont égaux alors on s'arrête
@@ -165,27 +168,33 @@ public class KMeans implements Algorithme {
      * @return la couleur moyenne d'un groupe
      */
     public Color moyenne(ArrayList<Pixel> groupe){
-        int sommeRGB = 0;
+        int sommeR = 0;
+        int sommeG = 0;
+        int sommeB = 0;
 
         // on parcourt tous les pixels d'un groupe
-        for(int i = 0; i < groupe.size(); i++){
-            sommeRGB += this.image.getRGB(groupe.get(i).x, groupe.get(i).y);
+        for(Pixel pixel : groupe){
+            Color couleur = new Color(this.image.getRGB(pixel.x, pixel.y));
+            sommeR += couleur.getRed();
+            sommeG += couleur.getGreen();
+            sommeB += couleur.getBlue();
         }
 
-        if(groupe.size() == 0){
-            return Color.RED;
-        }else{
+        int tailleGroupe = groupe.size();
+        if(tailleGroupe == 0){
+            return Color.RED; // Valeur par défaut si le groupe est vide
+        } else {
             // on retourne une nouvelle couleur correspondant à la moyenne des couleurs des pixels du cluster
-            return new Color(sommeRGB/groupe.size());
+            return new Color(sommeR / tailleGroupe, sommeG / tailleGroupe, sommeB / tailleGroupe);
         }
     }
 
     public static void main(String[] args) throws IOException {
 
         // image utilisée pour réaliser le clustering
-        KMeans kMeans = new KMeans("img/flouGausien.jpg");
+        KMeans_v0 kMeans = new KMeans_v0("img/flouMoyenne.jpg");
         // on applique l'algorithme
-        TreeMap<Integer, ArrayList<Pixel>> res = kMeans.run(8);
+        TreeMap<Integer, ArrayList<Pixel>> res = kMeans.run(20);
 
         // on crée une image "vide"
         BufferedImage sortie = new BufferedImage(kMeans.image.getWidth(), kMeans.image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
@@ -193,17 +202,20 @@ public class KMeans implements Algorithme {
         // on parcourt les clusters un par un
         for (int i = 0; i < res.size(); i++) {
             // on définit une couleur aléatoire pour chaque cluster
-            Random random = new Random();
-            Color cCourante = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+//            Random random = new Random();
+//            Color cCourante = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+
+            // on prend la couleur moyenne de chaque cluster
+            Color couleurMoyenne = kMeans.moyenne(res.get(i));
 
             // on parcourt tous les pixels du cluster
             for(int j = 0; j < res.get(i).size(); j++){
-                sortie.setRGB(res.get(i).get(j).x, res.get(i).get(j).y, cCourante.getRGB());
+                sortie.setRGB(res.get(i).get(j).x, res.get(i).get(j).y, couleurMoyenne.getRGB());
             }
         }
 
         // nouvelle image contenant les différents clusters
-        write(sortie, "jpg", new File("img/nouvelleImageKMeans.jpg"));
+        write(sortie, "jpg", new File("img/nouvelleImageKmeans20.jpg"));
         System.out.println("Image générée avec succès !");
     }
 }

@@ -21,8 +21,10 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
+
         String filename="img/150x150.png";
         DBScan dbScan=new DBScan(new NormeRedmean(), 10, 8);
+
         int[][] data=OutilCouleur.convertTab(filename);
         int[] result=dbScan.run(data);
 
