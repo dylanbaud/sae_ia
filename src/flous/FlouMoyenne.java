@@ -92,18 +92,23 @@ public class FlouMoyenne {
      * @return la moyenne des valeurs de la liste
      */
     private int moyenne(ArrayList<Integer> rgbVoisins) {
+        // on initialise les sommes de chaque couleur à 0
         int sommeR = 0;
         int sommeG = 0;
         int sommeB = 0;
+        // on parcourt la liste de tous les voisins
         for (int rgb : rgbVoisins) {
+            // on ajoute leur valeur de R, G et B à la somme totale
             Color color = new Color(rgb);
             sommeR += color.getRed();
             sommeG += color.getGreen();
             sommeB += color.getBlue();
         }
+        // on calcule la moyenne pour chaque couleur
         int moyenneR = sommeR / rgbVoisins.size();
         int moyenneG = sommeG / rgbVoisins.size();
         int moyenneB = sommeB / rgbVoisins.size();
+        // on renvoie la valeur de la nouvelle couleur RGB
         return new Color(moyenneR, moyenneG, moyenneB).getRGB();
     }
 }
