@@ -189,33 +189,4 @@ public class KMeans_v0 implements Algorithme {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-
-        // image utilisée pour réaliser le clustering
-        KMeans_v0 kMeans = new KMeans_v0("img/flouMoyenne.jpg");
-        // on applique l'algorithme
-        TreeMap<Integer, ArrayList<Pixel>> res = kMeans.run(20);
-
-        // on crée une image "vide"
-        BufferedImage sortie = new BufferedImage(kMeans.image.getWidth(), kMeans.image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-
-        // on parcourt les clusters un par un
-        for (int i = 0; i < res.size(); i++) {
-            // on définit une couleur aléatoire pour chaque cluster
-//            Random random = new Random();
-//            Color cCourante = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-
-            // on prend la couleur moyenne de chaque cluster
-            Color couleurMoyenne = kMeans.moyenne(res.get(i));
-
-            // on parcourt tous les pixels du cluster
-            for(int j = 0; j < res.get(i).size(); j++){
-                sortie.setRGB(res.get(i).get(j).x, res.get(i).get(j).y, couleurMoyenne.getRGB());
-            }
-        }
-
-        // nouvelle image contenant les différents clusters
-        write(sortie, "jpg", new File("img/nouvelleImageKmeans20.jpg"));
-        System.out.println("Image générée avec succès !");
-    }
 }

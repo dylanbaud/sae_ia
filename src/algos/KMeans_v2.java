@@ -155,17 +155,5 @@ public class KMeans_v2 implements Algorithme {
             return new Color(sommeR / nb, sommeG / nb, sommeB / nb);
         }
     }
-
-    public static void main(String[] args) {
-
-        KMeans_v2 kMeans = new KMeans_v2(10);
-
-        int[][] tabImage = OutilCouleur.convertTab("img/flouGausien.jpg");
-
-        int[] tabRes = kMeans.run(tabImage);
-
-        ClusterImage.afficherClusters(tabRes, "img/flouGausien.jpg", "img/nouvelleImageKMeansV2.jpg");
-        System.out.println("Image générée avec succès !");
-
-    }
+    
 }

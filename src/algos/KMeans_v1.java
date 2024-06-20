@@ -185,25 +185,4 @@ public class KMeans_v1 implements Algorithme {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-
-        // image utilisée pour réaliser le clustering
-        KMeans_v1 kMeans = new KMeans_v1("img/16x16.png");
-        Pixel2[] pixels = new Pixel2[kMeans.image.getWidth() * kMeans.image.getHeight()];
-        int l = 0;
-
-        for(int i = 0; i < kMeans.image.getWidth(); i++){
-            for(int j = 0; j < kMeans.image.getHeight(); j++){
-                Pixel2 pCourant = new Pixel2(i, j, new Color(kMeans.image.getRGB(i, j)));
-                pixels[l] = pCourant;
-                l++;
-            }
-        }
-
-        // on applique l'algorithme
-        int[] tabRes = kMeans.run(2, pixels);
-
-        ClusterImage.afficherClusters(tabRes, "img/16x16.png", "img/16x16-2.jpg");
-        System.out.println("Image générée avec succès !");
-    }
 }
