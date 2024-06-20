@@ -31,7 +31,7 @@ public class HAC implements Algorithme {
         double[][] distances = initialDistance(data);
 
         // Boucle principale
-        while (Arrays.stream(clusters).distinct().count() > 1) {
+        while (Arrays.stream(clusters).distinct().count() > nbDecoupe) {
 
             // Trouver la paire la plus proche
             int[] pair = findPair(clusters, distances);
@@ -100,6 +100,4 @@ public class HAC implements Algorithme {
     private int[] decoupe(int k) {
         return history.get(history.size() - k);
     }
-
-
 }

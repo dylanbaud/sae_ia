@@ -1,11 +1,10 @@
 package main;
 
 import algos.DBScan;
+import algos.HAC;
+import filtres.Biome;
 import filtres.ClusterImage;
-import norme.NormeBase;
-import norme.NormeEuclidienne;
-import norme.NormeRedmean;
-import norme.OutilCouleur;
+import norme.*;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -21,15 +20,13 @@ public class Main {
         System.out.println(Arrays.toString(hac.run(data)));
          */
 
+        String filename = "img/16x16.png";
+        int[][] data = OutilCouleur.convertTab(filename);
+        assert data != null;
+        HAC hac = new HAC(new NormeBase(), 400);
+        int[] clusters = hac.run(data);
 
-        String filename="img/150x150.png";
-        DBScan dbScan=new DBScan(new NormeRedmean(), 10, 8);
-
-        int[][] data=OutilCouleur.convertTab(filename);
-        int[] result=dbScan.run(data);
-
-        ClusterImage.afficherClusters(result, filename, "img/DBSCAN_IMAGE.png");
-
-        System.out.println(Arrays.toString(result));
+        Palette palette = new Palette(new Color[]{Biome.TUNDRA.getColor(), Biome.TAIGA.getColor(), Biome.FORET_TEMPEREE.getColor(), Biome.FORET_TROPICALE.getColor(), Biome.SAVANE.getColor(), Biome.PRAIRIE.getColor(), Biome.DESERT.getColor(), Biome.GLACIER.getColor(), Biome.EAU_PEU_PROFONDE.getColor(), Biome.EAU_PROFONDE.getColor()});
+        ClusterImage.afficherClustersBiome(clusters, filename, "img/16x16_hac.png", palette);
     }
 }
