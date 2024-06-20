@@ -4,7 +4,6 @@ import filtres.ClusterImage;
 import norme.OutilCouleur;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,15 +13,20 @@ import java.util.TreeMap;
  */
 public class KMeans_v2 implements Algorithme {
 
+    private final int nbClusters;
+
+    KMeans_v2(int nbClusters) {
+        this.nbClusters = nbClusters;
+    }
+
     /**
      * L'algorithme KMeans est un algorithme de clustering qui permet
      * de regrouper des données en K clusters.
      *
-     * @param nbClusters le nombre de clusters à former (nombre de centres)
      * @param tabCouleurs liste de couleur avec leurs coordonnées et leur couleur
      * @return les groupes de pixels correspondants aux clusters
      */
-    public int[] run(int nbClusters, int[][] tabCouleurs) {
+    public int[] run(int[][] tabCouleurs) {
 
         // on vérifie que le nombre de groupes est supérieur à 0
         if(nbClusters >= 0){
@@ -152,13 +156,13 @@ public class KMeans_v2 implements Algorithme {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        KMeans_v2 kMeans = new KMeans_v2();
+        KMeans_v2 kMeans = new KMeans_v2(10);
 
         int[][] tabImage = OutilCouleur.convertTab("img/flouGausien.jpg");
 
-        int[] tabRes = kMeans.run(10, tabImage);
+        int[] tabRes = kMeans.run(tabImage);
 
         ClusterImage.afficherClusters(tabRes, "img/flouGausien.jpg", "img/nouvelleImageKMeansV2.jpg");
         System.out.println("Image générée avec succès !");
